@@ -1,0 +1,94 @@
+#include<stdio.h>
+#include<iostream>
+#include<string>
+#include"tinystr.h"
+#include"tinyxml.h"
+//#include<afx.h>
+using namespace std;
+
+/*
+CString GetAppPath()
+{
+	TCHAR modulePath[MAX_PATH];
+	GetModuleFileName(NULL, modulePath, MAX_PATH);
+	CString strModulePath(modulePath);
+	strModulePath = strModulePath.Left(strModulePath.ReverseFind(_T('\\')));
+	return strModulePath;
+}
+*/
+/*
+
+*/
+
+
+bool CreateXmlFile()
+{
+	//创建一个XML的文档对象。
+	TiXmlDocument *myDocument = new TiXmlDocument();
+	//创建一个根元素并连接。
+	TiXmlElement *RootElement = new TiXmlElement("Persons");
+	myDocument->LinkEndChild(RootElement);
+	//创建一个Person元素并连接。
+	TiXmlElement *PersonElement = new TiXmlElement("Person");
+	RootElement->LinkEndChild(PersonElement);
+	//设置Person元素的属性。
+	PersonElement->SetAttribute("ID", "1");
+	//创建name元素、age元素并连接。
+	TiXmlElement *NameElement = new TiXmlElement("name");
+	TiXmlElement *AgeElement = new TiXmlElement("age");
+	PersonElement->LinkEndChild(NameElement);
+	PersonElement->LinkEndChild(AgeElement);
+	//设置name元素和age元素的内容并连接。
+	TiXmlText *NameContent = new TiXmlText("chris");
+	TiXmlText *AgeContent = new TiXmlText("40");
+	NameElement->LinkEndChild(NameContent);
+	AgeElement->LinkEndChild(AgeContent);
+	//保存到文件
+	myDocument->SaveFile("C:/Users/dell/Desktop/111/22.XML");
+	return 1;
+}
+
+struct node
+{
+	string Tname;
+	int line;
+	node*next;
+};
+node* makeList()
+{
+	node * a = new node;
+	node * b = new node;
+	node * c = new node;
+	node*head = NULL;
+	a->line = 169;
+	a->Tname = 'a';
+	b->line = 160;
+	b->Tname = 'b';
+	c->line = 109;
+	c->Tname = 'c';
+	a->next = b;
+	b->next = c;
+	c->next = NULL;
+	head = a;
+	return head;
+}
+void listout(node*p)
+{
+	node * t = NULL;
+	t = p;
+	while (t != NULL)
+	{
+		cout << t->Tname;
+		cout << t->line;
+		cout << endl;
+		t = t->next;
+	}
+}
+int main()
+{
+	node*head = makeList();
+	listout(head);
+	
+	CreateXmlFile();
+	return 0;
+}
