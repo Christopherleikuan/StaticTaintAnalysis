@@ -1,0 +1,112 @@
+#include<stdio.h>
+#include<iostream>
+#include<string>
+#include"tinystr.h"
+#include"tinyxml.h"
+using namespace std;
+struct node
+{
+	char* Tname;
+	char* Type;
+	char* line;
+	node*next;
+};
+bool CreateXmlFile(node*p,char*file)
+{
+	//创建一个XML的文档对象。
+	TiXmlDocument *myDocument = new TiXmlDocument();
+	//创建一个根元素并连接。
+	TiXmlElement *RootElement = new TiXmlElement("Taints");
+	myDocument->LinkEndChild(RootElement);
+	//创建一个Person元素并连接。
+	TiXmlElement *PersonElement = new TiXmlElement("Taint");
+	RootElement->LinkEndChild(PersonElement);
+	//设置Person元素的属性。
+	PersonElement->SetAttribute("type", p->Type);
+	//创建name元素、age元素并连接。
+	TiXmlElement *NameElement = new TiXmlElement("name");
+	TiXmlElement *AgeElement = new TiXmlElement("line");
+	PersonElement->LinkEndChild(NameElement);
+	PersonElement->LinkEndChild(AgeElement);
+	//设置name元素和age元素的内容并连接。
+	TiXmlText *NameContent = new TiXmlText(p->Tname);
+	TiXmlText *AgeContent = new TiXmlText(p->line);
+	NameElement->LinkEndChild(NameContent);
+	AgeElement->LinkEndChild(AgeContent);
+	//保存到文件
+	int i;
+	
+	myDocument->SaveFile(file);
+	return 1;
+}
+node* makeList()
+{
+	node *head = NULL;
+	int i = 0;
+	while (i!=-1)
+	{
+		node* p = new node;
+		cout << "输入污染类型："<<endl;
+		p->Type = new char;
+		cin >> p->Type;
+		cout << "输入污染变量名字：" << endl;
+		p->Tname = new char;
+		cin >> p->Tname;
+		cout << "输入污染变量行号：" << endl;
+		p->line = new char;
+		cin >> p->line;
+		p->next = NULL;
+		if (head == NULL)
+		{
+			head = p;
+		}
+		else
+		{
+			p->next = head->next;
+			head->next = p;
+		}
+		cout << "是否继续添加？" << endl;
+		cin >> i;
+	}
+	return head;
+}
+void listout(node*head)
+{
+	node * t = NULL;
+	t = head;
+	while (t != NULL)
+	{
+		cout << t->Tname;
+		cout << t->line;
+		cout << endl;
+		t = t->next;
+	}
+}
+void XMLout(node*head)
+{
+	char *file = "C:/Users/Chris/Desktop/111/%d.XML";
+	char * f = NULL;
+	int i = 1;
+	node*p = head;
+	while (p!=NULL)
+	{
+		f = new char[50];
+		sprintf(f, file, i);
+		CreateXmlFile(p, f);
+		i++;
+		p = p->next;
+	}
+		
+		
+
+	
+	
+
+}
+int main()
+{
+	node*head = makeList();
+	listout(head);
+	XMLout(head);
+	return 0;
+}
